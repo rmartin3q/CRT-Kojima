@@ -1,4 +1,11 @@
-# cool-retro-term
+# CRT- "Kojima" 
+
+A modified variant of cool-retro-term originally by Swordfish90. tweaked to remove legacy ascii behavior and function correctly on Wayland.
+
+## NOTE!!! This is a work in progress and not yet stable on the latest versions of Hyprland!
+
+
+
 
 |> Default Amber|C:\ IBM DOS|$ Default Green|
 |---|---|---|
@@ -9,7 +16,7 @@ cool-retro-term is a terminal emulator which mimics the look and feel of the old
 It has been designed to be eye-candy, customizable, and reasonably lightweight.
 
 It uses the QML port of qtermwidget (Konsole): https://github.com/Swordfish90/qmltermwidget.
-
+<>H&wix{8+[d^mH6%\<}
 This terminal emulator works under Linux and macOS and requires Qt6.
 
 Settings such as colors, fonts, and effects can be accessed via context menu.
