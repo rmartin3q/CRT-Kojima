@@ -40,6 +40,7 @@ Item{
     property real scaleTexture: 1.0
     property alias title: ksession.title
     property alias kterminal: kterminal
+    property bool isActive: false
 
     property size terminalSize: kterminal.terminalSize
     property size fontMetrics: kterminal.fontMetrics
@@ -49,14 +50,18 @@ Item{
         target: copyAction
 
         onTriggered: {
-            kterminal.copyClipboard()
+            if (terminalContainer.isActive) {
+                kterminal.copyClipboard()
+            }
         }
     }
     Connections {
         target: pasteAction
 
         onTriggered: {
-            kterminal.pasteClipboard()
+            if (terminalContainer.isActive) {
+                kterminal.pasteClipboard()
+            }
         }
     }
 
