@@ -4,6 +4,8 @@
 #include <QQmlContext>
 #include <QStringList>
 
+#include <QCommandLineParser>
+
 #include <QDir>
 
 #include <QtWidgets/QApplication>
@@ -98,6 +100,9 @@ int main(int argc, char *argv[])
         qWarning() << "KDSingleApplication: primary not reachable, continuing as independent instance.";
     }
 
+
+
+
     QQmlApplicationEngine engine;
     FileIO fileIO;
 
@@ -114,20 +119,55 @@ int main(int argc, char *argv[])
 #endif
 
     // Manage command line arguments from the cpp side
-    QStringList args = app.arguments();
+        // Improved command-line parsing with QCommandLineParser
+    #include <QCommandLineParser>   // ← Add this include near the top of the file if not already present
 
-    // Manage default command
-    QStringList cmdList;
-    if (args.contains("-e")) {
-        cmdList << args.mid(args.indexOf("-e") + 1);
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Cool-Retro-Term - Retro terminal emulator");
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    QCommandLineOption workdirOption("workdir",
+                                     QCoreApplication::translate("main", "Change working directory"),
+                                     QCoreApplication::translate("main", "dir"));
+    parser.addOption(workdirOption);
+
+    QCommandLineOption executeOption({"e", "execute"},
+                                     QCoreApplication::translate("main", "Command to execute (use as last option)"),
+                                     QCoreApplication::translate("main", "command"));
+    parser.addOption(executeOption);
+
+    // Optional: add more options that already exist in your help text
+    // QCommandLineOption fullscreenOption("fullscreen", "Run in fullscreen mode");
+    // parser.addOption(fullscreenOption);
+    // QCommandLineOption profileOption({"p", "profile"}, "Run with given profile", "prof");
+    // parser.addOption(profileOption);
+    // QCommandLineOption defaultSettingsOption("default-settings", "Run with default settings");
+    // parser.addOption(defaultSettingsOption);
+    // QCommandLineOption verboseOption("verbose", "Print additional information");
+    // parser.addOption(verboseOption);
+
+    parser.process(app);
+
+    // Extract values
+    QString workDir = parser.value(workdirOption);
+    if (workDir.isEmpty()) {
+        workDir = QDir::currentPath();
     }
-    QVariant command(cmdList.empty() ? QVariant() : cmdList[0]);
-    QVariant commandArgs(cmdList.size() <= 1 ? QVariant() : QVariant(cmdList.mid(1)));
+
+    QStringList cmdArgs;
+    if (parser.isSet(executeOption)) {
+        cmdArgs = parser.positionalArguments();  // everything after -e / --execute
+    }
+
+    QVariant command(cmdArgs.isEmpty() ? QVariant() : cmdArgs.first());
+    QVariant commandArgs(cmdArgs.size() <= 1 ? QVariant() : QVariant(cmdArgs.mid(1)));
+
+    // Keep setting context properties (moved here from later in the file)
     engine.rootContext()->setContextProperty("appVersion", appVersion);
     engine.rootContext()->setContextProperty("defaultCmd", command);
     engine.rootContext()->setContextProperty("defaultCmdArgs", commandArgs);
-
-    engine.rootContext()->setContextProperty("workdir", getNamedArgument(args, "--workdir", QDir::currentPath()));
+    engine.rootContext()->setContextProperty("workdir", workDir);
     engine.rootContext()->setContextProperty("fileIO", &fileIO);
 
     // Manage import paths for Linux and OSX.

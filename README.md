@@ -47,7 +47,7 @@ Settings such as colors, fonts, and effects can be accessed via context menu.
 
 You can also build cool-retro-term from source.
 
-### Dependencies
+### Dependencies (QT5)
 
 Let's start by grabbing the correct dependencies for the most popular distros:
 
