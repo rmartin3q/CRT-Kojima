@@ -4,7 +4,21 @@ A modified variant of cool-retro-term originally by Swordfish90. tweaked to remo
 
 ## NOTE!!! This is a work in progress and not yet stable on the latest versions of Hyprland!
 
+| Function | Status | 
+| - | - |
+| **Remove default legacy backspace behavior** | `done` |
+| **Correct `cool-retro-term -e` function** | `pending` |
+|  |  |
 
+
+## OS Compatibility
+
+| **Distro** | **Status** |
+| - | - |
+| *CachyOS* | `OK` |
+| *U24.04* | `Untested` |
+|  |  |
+|  |  |
 
 
 |> Default Amber|C:\ IBM DOS|$ Default Green|
